@@ -12,8 +12,8 @@ import java.lang.reflect.Array;
 //Following points need to be improved.
 //1. If over 3 times of using functions, it has an error. = Done.
 //2. "-" is placed behind digits = Done. Put "-" in front of digits
-//3. consecutive different functions are not working.
-//4. Need to have history of temp[] & functions on display?
+//3. consecutive different functions are not working. > When you press functions btn more than 1, result should be displayed
+//4. Need to have history of temp[] & functions on display? = Done. 
 //5. After result comes out, when new temp[] input on display, old result still placed.
 
 public class Calculator extends JFrame implements ActionListener {
@@ -43,7 +43,7 @@ public class Calculator extends JFrame implements ActionListener {
 	int btnCount = 0; //For solving error no.1, need to count how many functions are pressed.
 	
 	JTextArea display = new JTextArea(1, 10); //white board on display size (row(width), column(height))
-	JTextField secondDisplay = new JTextField(); //showing white board on display 
+	JTextArea secondDisplay = new JTextArea(); //showing white board on display 
 	Font font = new Font("Arial", Font.PLAIN, 35); //font setting in btns
 	Font font1 =  new Font("Arial", Font.BOLD, 45); //Display font 
 	Font font2 =  new Font("Arial", Font.PLAIN, 30); //2nd Display font
@@ -87,16 +87,15 @@ public class Calculator extends JFrame implements ActionListener {
 		}
 		//showing history of calculation
 		secondDisplay.setFont(font2);
-		secondDisplay.setBorder(null);
+		secondDisplay.setEditable(false);
 		secondDisplay.setVisible(true);
-		secondDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
 		secondDisplay.setPreferredSize(seconddisplayDimension);
 		secondDisplay.setOpaque(false);
 		
 		display.setFont(font1); //Take font style in display
-		display.setEditable(true); //If you want to use keyboard: true
+		display.setEditable(false); //If you want to use keyboard: true
 		display.setVisible(true);
-		display.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT); //digit input location in display: right side
+		//display.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); //digit input location in display: right side
 		display.setPreferredSize(displayDimension); //white board on display size
 		display.setOpaque(false);
 		
@@ -143,7 +142,7 @@ public class Calculator extends JFrame implements ActionListener {
 		for (int i = 12; i < 14; i++) {
 			row[5].add(button[i]);
 			}
-
+			
 			row[5].add(button[17]); //button[17] is = btn placed on the right side of bottom
 			add(row[5]);
 			
@@ -151,7 +150,7 @@ public class Calculator extends JFrame implements ActionListener {
 		
 		}
 
-	public void clear() { //1. method for clear button
+	public void clear() { //method for clear button
 		display.setText(null);
 		secondDisplay.setText(null);
 	}
@@ -192,37 +191,34 @@ public class Calculator extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == button[0]) {
 			display.append("7");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("7");
 		}
 		if (ev.getSource() == button[1]) {
 			display.append("8");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("8");
 		}
 		if (ev.getSource() == button[2]) {
 			display.append("9");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("9");
 		}
 		if (ev.getSource() == button[3]) {
-			//add btn pressed > count add btn since count of add btn is equal to the price of temp array.
-			//temp[0] = Double.parseDouble(display.getText());
-			//function[0] = +
 			function[0] = true;
 			temp[btnCount] = Double.parseDouble(display.getText()); //temp[i] is equal to count of function btn pressed.
 			btnCount++; //btnCount needs to be increased for consecutive functions
 			display.setText("");
-			secondDisplay.setText("+");
+			secondDisplay.append("+");
 		}
 		if (ev.getSource() == button[4]) {
 			display.append("4");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("4");
 		}
 		if (ev.getSource() == button[5]) {
 			display.append("5");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("5");
 		}
 		if (ev.getSource() == button[6]) {
 			display.append("6");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("6");
 		}
 		if (ev.getSource() == button[7]) {
 			//temp[0] = Double.parseDouble(display.getText());
@@ -231,19 +227,19 @@ public class Calculator extends JFrame implements ActionListener {
 			temp[btnCount] = Double.parseDouble(display.getText());
 			btnCount++;
 			display.setText("");
-			secondDisplay.setText("-");
+			secondDisplay.append("-");
 		}
 		if (ev.getSource() == button[8]) {
 			display.append("1");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("1");
 		}
 		if (ev.getSource() == button[9]) {
 			display.append("2");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("2");
 		}
 		if (ev.getSource() == button[10]) {
 			display.append("3");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("3");
 		}
 		if (ev.getSource() == button[11]) {
 			//temp[0] = Double.parseDouble(display.getText());
@@ -252,11 +248,11 @@ public class Calculator extends JFrame implements ActionListener {
 			temp[btnCount] = Double.parseDouble(display.getText());
 			btnCount++;
 			display.setText("");
-			secondDisplay.setText("*");
+			secondDisplay.append("*");
 		}
 		if (ev.getSource() == button[12]) {
 			display.append(".");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append(".");
 		}
 		if (ev.getSource() == button[13]) {
 			//temp[0] = Double.parseDouble(display.getText());
@@ -265,7 +261,7 @@ public class Calculator extends JFrame implements ActionListener {
 			temp[btnCount] = Double.parseDouble(display.getText());
 			btnCount++;
 			display.setText("");
-			secondDisplay.setText("/");
+			secondDisplay.append("/");
 		}
 		if (ev.getSource() == button[14]) {
 			clear();
@@ -288,7 +284,7 @@ public class Calculator extends JFrame implements ActionListener {
 		}
 		if (ev.getSource() == button[18]) {
 			display.append("0");
-			secondDisplay.setText(display.getText());
+			secondDisplay.append("0");
 		}
 	}
 

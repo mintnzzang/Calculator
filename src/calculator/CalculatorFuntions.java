@@ -39,7 +39,6 @@ public class CalculatorFuntions {
 				}
 			}
 			*/
-
 			// second way to write below logic
 			for(int j=0 ; j < function.length ; j++) {
 				if(function[j]==true) {
