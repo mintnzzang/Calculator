@@ -6,71 +6,84 @@ package calculator;
  */
 public class CalculatorFuntions {
 
-
+	Functions functionEnum;
+	
+	CalculatorFuntions(){
+		
+	}
 
 	/*
 	 * getResult() is to get result of calculation.
 	 *
 	 */
-	public String getResult(double[] temp, boolean[] function, int btnCount) { //result price method
-		double result = temp[0];
-
-		//*** make each calculations(+/-/*/ / ) to method , choose one of the way and extend it
-		try {
-
-
-			// first way to write below logic
-			/*
-			if (function[0] == true) {//adding
-				for(int i = 1; i <= btnCount; i++) {
-					result += temp[i]; //result = result + temp[1] + temp[2] ....
-				}
-			}else if (function[1] == true) {//Subtracting
-				for(int i = 1; i <= btnCount; i++) {
-					result -= temp[i];
-				}
-			}else if (function[2] == true) {//multiplying
-				for(int i = 1; i <= btnCount; i++) {
-					result *= temp[i];
-				}
-			}else if (function[3] == true) {//dividing
-				for(int i = 1; i <= btnCount; i++) {
-					result /= temp[i];
+	private void getFunction(boolean[] function) {
+		for(int i = 0; i < function.length; i++) {
+			if(function[i] == true) {
+				switch (i) {
+				case 0:
+					functionEnum = Functions.plus;
+					break;
+				
+				case 1:
+					functionEnum = Functions.subtraction;
+					break;
+					
+				case 2:
+					functionEnum = Functions.multiply;
+					break;
+					
+				case 3:
+					functionEnum = Functions.divide;
+					break;
 				}
 			}
-			*/
-			// second way to write below logic
-			for(int j=0 ; j < function.length ; j++) {
-				if(function[j]==true) {
-					switch(j) {
-					case 0:
-						for(int i = 1; i <= btnCount; i++) {
-							result += temp[i]; //result = result + temp[1] + temp[2] ....
-						}
-						break;
-					case 1:
-						for(int i = 1; i <= btnCount; i++) {
-							result -= temp[i];
-						}
-						break;
-					case 2:
-
-						for(int i = 1; i <= btnCount; i++) {
-							result *= temp[i];
-						}
-						break;
-					case 3:
-						for(int i = 1; i <= btnCount; i++) {
-							result /= temp[i];
-						}
-						break;
-					}
-				}
-			}
-		} catch (NumberFormatException e) {
 		}
-
+	}
+	
+	//getResult() is to get result of calculation.
+	public String getResult(double[] temp, boolean[] function, int btnCount) { //result price method
+		getFunction(function);
+		return calculate(btnCount, temp);
+		}
+	
+	/* 
+	 * This method is to calculate input numbers.
+	 * 
+	 * @param btnCount is a counter that count how many time of input
+	 * @param temp is an array that store input numbers
+	 * @return is a string value that show the result of calculation.
+	 */
+	
+	private String calculate(int btnCount, double[] temp) {
+		double result = temp[0];
+		for (int i = 1; i <= btnCount; i++) {
+			switch (functionEnum) {
+			case plus:
+				result += temp[i];
+				break;
+			
+			case subtraction:
+				result -= temp[i];
+				break;
+				
+			case multiply:
+				result *= temp[i];
+				break;
+				
+			case divide:
+				result /= temp[i];
+				break;
+			}
+		}
+	
 		return Double.toString(result);
+	
+	}
+	
+	//enumeration of functions.
+	
+	public enum Functions {
+		plus, subtraction, multiply, divide;
 	}
 
 }

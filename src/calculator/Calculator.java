@@ -8,9 +8,8 @@ import javax.swing.text.StyleConstants;
 import java.awt.event.*;
 import java.lang.reflect.Array;
 
-
 //Following points need to be improved.
-//1. If over 3 times of using functions, it has an error. = Done.
+//1. Make another box for storing temporary result. Double tempResult = 0;
 //2. "-" is placed behind digits = Done. Put "-" in front of digits
 //3. consecutive different functions are not working. > When you press functions btn more than 1, result should be displayed
 //4. Need to have history of temp[] & functions on display? = Done. 
@@ -47,6 +46,7 @@ public class Calculator extends JFrame implements ActionListener {
 	Font font = new Font("Arial", Font.PLAIN, 35); //font setting in btns
 	Font font1 =  new Font("Arial", Font.BOLD, 45); //Display font 
 	Font font2 =  new Font("Arial", Font.PLAIN, 30); //2nd Display font
+	boolean tempDisplay = false;
 
 	//Constructor
 	Calculator() { //same as class name = Calculator
@@ -59,7 +59,7 @@ public class Calculator extends JFrame implements ActionListener {
 		GridLayout grid = new GridLayout(6, 5); //number of layout in calcualtor
 		setLayout(grid);
 
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < 100; i++) { 
 			temp[i] = 0;
 		}
 
@@ -186,9 +186,24 @@ public class Calculator extends JFrame implements ActionListener {
 		} catch (Exception e) {
 		}
 	}
+	
+	public void setTempDisplay() {
+		if(tempDisplay) {
+			display.setText("");
+			tempDisplay = false;
+		}
+	}
+	
+	public void setResult() {
+		temp[btnCount] = Double.parseDouble(display.getText()); //temp[i] is equal to count of function btn pressed.
+		btnCount++; //btnCount needs to be increased for consecutive functions
+		display.setText("");
 
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		setTempDisplay();
 		if (ev.getSource() == button[0]) {
 			display.append("7");
 			secondDisplay.append("7");
@@ -203,10 +218,18 @@ public class Calculator extends JFrame implements ActionListener {
 		}
 		if (ev.getSource() == button[3]) {
 			function[0] = true;
-			temp[btnCount] = Double.parseDouble(display.getText()); //temp[i] is equal to count of function btn pressed.
-			btnCount++; //btnCount needs to be increased for consecutive functions
-			display.setText("");
+			setResult();
 			secondDisplay.append("+");
+			/*
+			if(btnCount != 0) {
+				String displayValue = calFunctions.getResult(temp, function, btnCount); //calculator
+				for(int i = 0; i < 4; i++) {
+					function[i] = false;
+				}
+				tempDisplay = true;
+				display.setText(displayValue); //2nd result will be displayed as like equal
+			}//default? when click "="?
+			*/
 		}
 		if (ev.getSource() == button[4]) {
 			display.append("4");
@@ -221,12 +244,8 @@ public class Calculator extends JFrame implements ActionListener {
 			secondDisplay.append("6");
 		}
 		if (ev.getSource() == button[7]) {
-			//temp[0] = Double.parseDouble(display.getText());
-			//function[1] = -
 			function[1] = true;
-			temp[btnCount] = Double.parseDouble(display.getText());
-			btnCount++;
-			display.setText("");
+			setResult();
 			secondDisplay.append("-");
 		}
 		if (ev.getSource() == button[8]) {
@@ -242,12 +261,8 @@ public class Calculator extends JFrame implements ActionListener {
 			secondDisplay.append("3");
 		}
 		if (ev.getSource() == button[11]) {
-			//temp[0] = Double.parseDouble(display.getText());
-			//function[2] = *
 			function[2] = true;
-			temp[btnCount] = Double.parseDouble(display.getText());
-			btnCount++;
-			display.setText("");
+			setResult();
 			secondDisplay.append("*");
 		}
 		if (ev.getSource() == button[12]) {
@@ -255,12 +270,8 @@ public class Calculator extends JFrame implements ActionListener {
 			secondDisplay.append(".");
 		}
 		if (ev.getSource() == button[13]) {
-			//temp[0] = Double.parseDouble(display.getText());
-			//function[3] = /
 			function[3] = true;
-			temp[btnCount] = Double.parseDouble(display.getText());
-			btnCount++;
-			display.setText("");
+			setResult();
 			secondDisplay.append("/");
 		}
 		if (ev.getSource() == button[14]) {
@@ -274,7 +285,6 @@ public class Calculator extends JFrame implements ActionListener {
 		}
 		if (ev.getSource() == button[17]) {
 			temp[btnCount] = Double.parseDouble(display.getText());
-
 			String displayValue = calFunctions.getResult(temp,function,btnCount); //calculate
 			btnCount = 0;
 			for (int i = 0; i < 4; i++) {
